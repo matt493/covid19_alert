@@ -15,42 +15,21 @@ td, th {
 }
 
 </style>
-<script>
-    function addItem()
-    {
-        html = "<tr>";
-        html += "<td><input type='text' name='Name[]'></td>";
-        html += "<td><input type='phone' name='phone[]'></td>";
-        html += "<td><select name='status' id='status'>"
-        html +=  "<option value='negative'>Negative</option>"
-        html += "<option value='positive'>Positive</option>"
-        html += "</select></td>"
-        html += "<td><button type='button' onclick=''>Submit</button></td>"
-        html += "</tr>";
- 
-        var row = document.getElementById("tbody").insertRow();
-        row.innerHTML = html;
-    }
-    
-</script>
 
 </head>
 <body>
 
-<h2>Org_name</h2>
-
-<form method="POST" action="index.php">
- 
-    <table>
-        <tr>
-            <th>Name</th> <th>Phone</th> <th>Status</th> <th>Action</th>
-        </tr>
-        <tbody id="tbody"></tbody>
-    </table>
- 
-    <button style="margin: 4px" type="button" onclick="addItem();">Add</button>
-</form>
-
-
+<h1>INDEX</h1>
+<table>
+    <tr>
+        <th>page</th> <th>description</th>
+    </tr>
+    <tr>
+        <td> <a href="record_entry.php">Enter Record Shop ID = x</a> </td> <td> <p> add visitor records to ship ID 1</p> </td>
+    </tr>
+    <tr>
+        <td> <a href="medical_centre.php">Report Cases</a> </td> <td> <p> report an individual as Covid +ve</p> </td>
+    </tr>
+</table>
 </body>
 </html>
