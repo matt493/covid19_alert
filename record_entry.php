@@ -3,7 +3,7 @@
     // echo "<pre>";
     // print_r($_POST);
     // echo "</pre>";
-    $org_id=2;
+    $org_id=$_GET["org_id"];
     $pdo = new PDO('sqlite:db.db');
    
     $sql = "select * from visit where org_id = ?";
@@ -45,21 +45,22 @@ td, th {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$org_id]);
     $org_name = $stmt->fetch();
-    // $pdo = null;
 
-    // echo "<pre>";
-    // print_r($org_name);
-    // echo "</pre>";
 ?>
     <h1> <?php echo $org_name['org_name']; ?> </h1>
     <table>
         <tr>
             <th>Full Name</th> <th>E-Mail</th> <th>Temperature</th> <th>Time START</th> <th>Time END</th> <th>Status</th> <th>Action</th>
         </tr>
-        <?php foreach($rows as $row)
+        <?php 
+        $action_get = "record_entry.php?org_id=".$org_id;
+        $header_get = "Location:record_entry.php?org_id=".$org_id;
+        // echo $action_get;
+        // echo $header_get;
+        foreach($rows as $row)
         {
         ?>
-        <form method="POST" action="record_entry.php">
+        <form method="POST" action="<?php echo $action_get; ?>">
         <tr>
             <td> <?php echo $row['visitor_name']; ?> </td>
             <td> <?php echo $row['email']; ?> </td>
@@ -74,7 +75,7 @@ td, th {
         <?php  
         }
         ?>
-        <form method="POST" action="record_entry.php">
+        <form method="POST" action="<?php echo $action_get; ?>">
         <tr>
             <td><input type='text' name='name'></td>
             <td><input type='email' name='email'></td>
@@ -94,28 +95,22 @@ td, th {
 <?php
 if(isset($_POST['init_record']))
 {
-    // $pdo = new PDO('sqlite:db.db');
-
     $sql = "insert into visit(org_id,time_start,temperature,email,visitor_name) VALUES(?,julianday('now'),?,?,?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$org_id,$_POST['temperature'], $_POST['email'], $_POST['name']]);
     $_POST = array();
-    // $pdo = null;
 
-    header("Location:record_entry.php");
+    header($header_get);
     exit;
 }
 else if(isset($_POST['finalize']))
 {
-    // $pdo = new PDO('sqlite:db.db');
-
     $sql = "update visit set time_end = julianday('now') where visit_id = ? ";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$_POST['visit_id']]);
     $_POST = array();
-    // $pdo = null;
 
-    header("Location:record_entry.php");
+    header($header_get);
     exit;
 }
 ?>
